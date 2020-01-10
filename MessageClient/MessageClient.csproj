@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FRPCClientAOPContainer\FRPCClientAOPContainer.csproj" />
+    <ProjectReference Include="..\FRPCClientCommandConsole\FRPCClientCommandConsole.csproj" />
+    <ProjectReference Include="..\FRPCClient\FRPCClient.csproj" />
+    <ProjectReference Include="..\ITestServer\ITestServer.csproj" />
+    <ProjectReference Include="..\TestServer\TestServer.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -3,3 +3,15 @@
 ################################################################################
 
 /.vs/FRPCClient/v16
+/FRPCClient/bin/Debug/netstandard2.0
+/FRPCClient/obj
+/FRPCClientAOPContainer/bin/Debug/netstandard2.0
+/FRPCClientAOPContainer/obj
+/FRPCClientCommandConsole/bin/Debug/netstandard2.0
+/FRPCClientCommandConsole/obj
+/ITestServer/bin/Debug/netstandard2.0
+/ITestServer/obj
+/MessageClient/bin/Debug/netcoreapp3.1
+/MessageClient/obj
+/TestServer/bin/Debug/netstandard2.0
+/TestServer/obj
