@@ -15,3 +15,4 @@
 /MessageClient/obj
 /TestServer/bin/Debug/netstandard2.0
 /TestServer/obj
+/MessageClient/bin/Debug/netcoreapp2.2

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
-using System.Timers;
 using FRPCClient.Entity;
 using System.Threading;
 using System.Collections.Concurrent;
@@ -26,9 +25,9 @@ namespace FRPCClient
         /// </summary>
         public int MaxRetryCount { get; private set; }
 
-        private System.Timers.Timer HealthExaminationThread;
+        private Timer HealthExaminationThread;
 
-        private System.Timers.Timer ScheduledCleaningThread;
+        private Timer ScheduledCleaningThread;
 
         /// <summary>
         /// 任务列表
@@ -55,21 +54,9 @@ namespace FRPCClient
 
         private void TimerInit() {
 
-            HealthExaminationThread = new System.Timers.Timer
-            {
-                Enabled = true,
-                Interval = 1000 * 5 //执行间隔时间,单位为毫秒; 这里实际间隔为  second
-            };
-            HealthExaminationThread.Elapsed += new System.Timers.ElapsedEventHandler(HealthExaminationFunc);
-            HealthExaminationThread.Start();
+            HealthExaminationThread = new Timer(HealthExaminationFunc, null, 1000 * 5, 1000 * 5);
 
-            ScheduledCleaningThread = new System.Timers.Timer
-            {
-                Enabled = true,
-                Interval = 60000 //执行间隔时间,单位为毫秒; 这里实际间隔为1分钟  
-            };
-            ScheduledCleaningThread.Elapsed += new System.Timers.ElapsedEventHandler(ScheduledCleaningFunc);
-            ScheduledCleaningThread.Start();
+            ScheduledCleaningThread = new Timer(ScheduledCleaningFunc, null, 60000, 60000);
         }
 
         /// <summary>
@@ -82,8 +69,8 @@ namespace FRPCClient
             var result = new RemoteCallEntrity(info.ID, info, ReceiveMessageState.Wait, DateTime.Now.AddSeconds(OvertimeSecond),socket);
             MethodCallQueues.TryAdd(info.ID, result);
             return result;
-            
         }
+
         /// <summary>
         /// 进行远程调用
         /// </summary>
@@ -114,7 +101,7 @@ namespace FRPCClient
         /// <summary>
         /// 监控检查函数
         /// </summary>
-        private void HealthExaminationFunc(object source, ElapsedEventArgs e)
+        private void HealthExaminationFunc(object source)
         {
             foreach (var item in MethodCallQueues.Where(d => d.Value != null && DateTime.Now > d.Value.ExpirationTime && d.Value.State == ReceiveMessageState.Wait).ToList())
             {
@@ -135,7 +122,7 @@ namespace FRPCClient
         /// <summary>
         /// 定时清理函数
         /// </summary>
-        private void ScheduledCleaningFunc(object source, ElapsedEventArgs e)
+        private void ScheduledCleaningFunc(object source)
         {
             foreach (var item in MethodCallQueues.Where(d => DateTime.Now> d.Value.ExpirationTime.AddHours(60)).ToList())
             {
